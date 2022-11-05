@@ -19,7 +19,7 @@ const Setting = ({navigation}: any) => {
     } catch (e) {
       console.log(e);
     }
-    console.log('Done.');
+    console.log('Logged Out.');
   };
   const logOut = () => {
     removeToken();

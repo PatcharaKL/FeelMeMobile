@@ -1,0 +1,4 @@
+{
+    "accessToken": "jwt-access-token-dummy-123",
+    "refreshToken": "uuid4-refresh-token-dummy-123"
+}

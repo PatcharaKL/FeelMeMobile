@@ -18,7 +18,7 @@ const Login = ({navigation}: any) => {
       })
       .then(res => {
         setUserToken(res.data);
-        storeData(res.data);
+        // storeData(res.data);
         console.log(res.status);
         navigation.replace('Main');
       })
