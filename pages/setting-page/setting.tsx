@@ -1,21 +1,14 @@
 import React, {useContext} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {
-  Button,
-  Divider,
-  Layout,
-  TopNavigation,
-  Text,
-} from '@ui-kitten/components';
+import {Button, Layout, Text} from '@ui-kitten/components';
 import {userContext} from '../../contexts/userContext';
 import {ThemeContext} from '../../contexts/theme';
-import HealthBar from './HealthBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Character from './character';
 const Setting = ({navigation}: any) => {
   const removeToken = async () => {
     try {
-      await AsyncStorage.removeItem('TOKEN');
+      await AsyncStorage.removeItem('ACCESS_TOKEN');
+      await AsyncStorage.removeItem('REFRESH_TOKEN');
     } catch (e) {
       console.log(e);
     }
@@ -32,7 +25,7 @@ const Setting = ({navigation}: any) => {
       <Layout style={styles.bottomBanner}>
         <Button onPress={themeContext.toggleTheme}>TOGGLE THEME</Button>
         <Button onPress={logOut}>Logout</Button>
-        <Text>Token: {userToken}</Text>
+        <Text>Access Token: {userToken.accessToken}</Text>
       </Layout>
     </SafeAreaView>
   );

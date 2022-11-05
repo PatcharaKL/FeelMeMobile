@@ -3,6 +3,7 @@ import React, {useState, useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import {userContext} from '../../contexts/userContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode, {JwtPayload} from 'jwt-decode';
 // import theme from '../../assets/theme.json';
 import axios from 'axios';
 const Login = ({navigation}: any) => {
@@ -10,23 +11,30 @@ const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onPressFunction = async () => {
+  const loginHandler = async () => {
     axios
       .post('http://13.213.77.57/User/UserLogin', {
         email: email,
         password: password,
       })
       .then(res => {
-        setUserToken(res.data);
-        // storeData(res.data);
-        console.log(res.status);
+        let resAccessToken: string = res.data.accessToken;
+        let resRefreshToken: string = res.data.refreshToken;
+        setUserToken({
+          accessToken: resAccessToken,
+          refreshToken: resRefreshToken,
+        });
+        storeData(resAccessToken, resRefreshToken);
+        let decoded = jwtDecode<JwtPayload>(resAccessToken);
+        console.log(decoded);
         navigation.replace('Main');
       })
       .catch(err => console.log(err));
   };
-  const storeData = async (tokenValue: string) => {
+  const storeData = async (accessToken: string, refreshToken: string) => {
     try {
-      await AsyncStorage.setItem('TOKEN', tokenValue);
+      await AsyncStorage.setItem('ACCESS_TOKEN', accessToken);
+      await AsyncStorage.setItem('REFRESH_TOKEN', refreshToken);
     } catch (error) {
       console.log('error saving data!');
     }
@@ -50,7 +58,7 @@ const Login = ({navigation}: any) => {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
-          <Button style={styles.button} onPress={onPressFunction}>
+          <Button style={styles.button} onPress={loginHandler}>
             Login
           </Button>
         </Layout>

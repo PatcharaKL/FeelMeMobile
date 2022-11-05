@@ -20,7 +20,10 @@ import {default as defTheme} from './assets/theme.json';
 import {ThemeContext} from './contexts/theme';
 
 const App = () => {
-  const [userToken, setUserToken] = useState('');
+  const [userToken, setUserToken] = useState({
+    accessToken: null,
+    refreshToken: null,
+  });
   const [theme, setTheme] = useState('dark');
   const [test, setTest] = useState(eva.light);
   const toggleTheme = () => {
