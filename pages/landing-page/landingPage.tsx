@@ -3,26 +3,12 @@ import React, {useContext, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {userContext} from '../../contexts/userContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import verifyAccessToken from './verifyAccessToken';
 import jwtDecode from 'jwt-decode';
 // import theme from '../../assets/theme.json';
 
 const LandingPage = ({navigation}: any) => {
   const {setUserToken} = useContext(userContext);
-
-  const verifyAccessToken = (token: string | null) => {
-    var current_time = new Date().getTime() / 100;
-    if (!token) {
-      return false;
-    }
-    const tokenDecoded: any = jwtDecode(token);
-    console.log(current_time, tokenDecoded.exp);
-    if (current_time > tokenDecoded.exp) {
-      console.log('Token has been Expired');
-      // Fetch for new access token
-      return false;
-    }
-    return true;
-  };
 
   const handleGetToken = async () => {
     try {
