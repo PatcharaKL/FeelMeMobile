@@ -23,6 +23,7 @@ const App = () => {
   const [userToken, setUserToken] = useState({
     accessToken: null,
     refreshToken: null,
+    authenticated: false,
   });
   const [theme, setTheme] = useState('dark');
   const [test, setTest] = useState(eva.light);

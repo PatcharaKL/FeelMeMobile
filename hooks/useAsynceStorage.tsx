@@ -3,21 +3,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {userContext} from '../contexts/userContext';
 
 export const usePullToken = () => {
-  const {setUserToken} = useContext(userContext);
+  const [accessToken, setAccessToken]: any = useState(null);
+  const [refreshToken, setRefreshToken]: any = useState(null);
 
   useEffect(() => {
-    const localToken = '123';
-    setUserToken(localToken);
-  }, [setUserToken]);
+    getData();
+  }, []);
 
   const getData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('TOKEN');
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
+      await AsyncStorage.getItem('ACCESS_TOKEN').then(res =>
+        setAccessToken(res),
+      );
+      await AsyncStorage.getItem('REFRESH_TOKEN').then(res =>
+        setRefreshToken(res),
+      );
+      return {accessToken, refreshToken};
     } catch (e) {
       console.log(e);
     }
   };
+  return {accessToken, refreshToken};
 };
 
 export const useStorageStoreData = (key: string, value: JSON) => {

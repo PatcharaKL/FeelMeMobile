@@ -1,25 +1,26 @@
 import {Layout, Text} from '@ui-kitten/components';
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import {userContext} from '../../contexts/userContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import verifyAccessToken from './verifyAccessToken';
-import jwtDecode from 'jwt-decode';
+import useAuthorize from './useAuthorize copy';
+import {usePullToken} from '../../hooks/useAsynceStorage';
 // import theme from '../../assets/theme.json';
 
 const LandingPage = ({navigation}: any) => {
+  const isAuthorized = useAuthorize();
+  const {accessToken, refreshToken} = usePullToken();
   const {setUserToken} = useContext(userContext);
-
+  console.log('authorized?: ' + isAuthorized);
+  console.log('Local Token: ' + accessToken, refreshToken);
   const handleGetToken = async () => {
     try {
-      const localAccessToken = await AsyncStorage.getItem('ACCESS_TOKEN');
-      const localRefreshToken = await AsyncStorage.getItem('REFRESH_TOKEN');
-      if (!verifyAccessToken(localAccessToken)) {
+      if (!isAuthorized) {
         navigation.replace('Login');
       } else {
         setUserToken({
-          accessToken: localAccessToken,
-          refreshToken: localRefreshToken,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          authenticated: true,
         });
         navigation.replace('Main');
       }
