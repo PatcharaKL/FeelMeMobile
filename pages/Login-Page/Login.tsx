@@ -1,41 +1,37 @@
-import {Layout, Input, Button, Text} from '@ui-kitten/components';
-import React, {useState, useContext} from 'react';
-import {StyleSheet} from 'react-native';
-import {userContext} from '../../contexts/userContext';
+import {Layout, Input, Button, Text, Spinner} from '@ui-kitten/components';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import jwtDecode, {JwtPayload} from 'jwt-decode';
-// import theme from '../../assets/theme.json';
-import axios from 'axios';
+import {useLoginMutation} from '../../features/api/apiSlice';
+import {setToken} from '../../features/auth/tokensSlicer';
+import {useAppDispatch} from '../../app/hook';
 const Login = ({navigation}: any) => {
-  const {setUserToken} = useContext(userContext);
+  const dispatch = useAppDispatch();
+  const [login, {isLoading, isSuccess}] = useLoginMutation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const loginHandler = async () => {
-    axios
-      .post('http://13.213.77.57/User/UserLogin', {
-        email: email,
-        password: password,
-      })
-      .then(res => {
-        let resAccessToken: string = res.data.accessToken;
-        let resRefreshToken: string = res.data.refreshToken;
-        setUserToken({
-          accessToken: resAccessToken,
-          refreshToken: resRefreshToken,
-        });
-        storeData(resAccessToken, resRefreshToken);
-        let decoded = jwtDecode<JwtPayload>(resAccessToken);
-        console.log(decoded);
-        navigation.replace('Main');
-      })
-      .catch(err => console.log(err));
+    try {
+      const token = await login({email: email, password: password}).unwrap();
+      console.log(login);
+      storeData(token.accessToken, token.refreshToken);
+      dispatch(
+        setToken({
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+        }),
+      );
+      navigation.replace('Main');
+    } catch (err) {
+      console.error(err);
+    }
   };
   const storeData = async (accessToken: string, refreshToken: string) => {
     try {
       await AsyncStorage.setItem('ACCESS_TOKEN', accessToken);
       await AsyncStorage.setItem('REFRESH_TOKEN', refreshToken);
-    } catch (error) {
+    } catch (err) {
       console.log('error saving data!');
     }
   };
@@ -43,30 +39,38 @@ const Login = ({navigation}: any) => {
   return (
     <React.Fragment>
       <Layout style={styles.container}>
-        <Layout style={styles.formContainer}>
-          <Text style={styles.text} category="h1">
-            Feel Me
-          </Text>
-          <Input
-            style={styles.input}
-            placeholder="Email"
-            onChangeText={setEmail}
-          />
-          <Input
-            placeholder="Password"
-            style={styles.input}
-            onChangeText={setPassword}
-            secureTextEntry={true}
-          />
-          <Button style={styles.button} onPress={loginHandler}>
-            Login
-          </Button>
-        </Layout>
+        {isLoading || isSuccess ? (
+          <Layout style={styles.spinner}>
+            <Spinner size="giant" />
+          </Layout>
+        ) : (
+          <Layout style={styles.formContainer}>
+            <View>
+              <Text style={styles.text} category="h1">
+                Feel Me
+              </Text>
+              <Input
+                style={styles.input}
+                placeholder="Email"
+                onChangeText={setEmail}
+                value={email}
+              />
+              <Input
+                placeholder="Password"
+                style={styles.input}
+                onChangeText={setPassword}
+                secureTextEntry={true}
+              />
+              <Button style={styles.button} onPress={loginHandler}>
+                Login
+              </Button>
+            </View>
+          </Layout>
+        )}
       </Layout>
     </React.Fragment>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -88,6 +92,11 @@ const styles = StyleSheet.create({
     height: 300,
     justifyContent: 'center',
     alignSelf: 'center',
+  },
+  spinner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 export default Login;

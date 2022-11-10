@@ -18,6 +18,8 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {AppNavigator} from './pages/navigation.component';
 import {default as defTheme} from './assets/theme.json';
 import {ThemeContext} from './contexts/theme';
+import {Provider} from 'react-redux';
+import store from './app/store';
 
 const App = () => {
   const [userToken, setUserToken] = useState({
@@ -40,10 +42,12 @@ const App = () => {
     <React.Fragment>
       <userContext.Provider value={{userToken, setUserToken}}>
         <ThemeContext.Provider value={{theme, toggleTheme}}>
-          <IconRegistry icons={EvaIconsPack} />
-          <ApplicationProvider {...eva} theme={eva[theme]}>
-            <AppNavigator />
-          </ApplicationProvider>
+          <Provider store={store}>
+            <IconRegistry icons={EvaIconsPack} />
+            <ApplicationProvider {...eva} theme={eva[theme]}>
+              <AppNavigator />
+            </ApplicationProvider>
+          </Provider>
         </ThemeContext.Provider>
       </userContext.Provider>
     </React.Fragment>
