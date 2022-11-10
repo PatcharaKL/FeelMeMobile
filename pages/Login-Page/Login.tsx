@@ -14,7 +14,6 @@ const Login = ({navigation}: any) => {
   const loginHandler = async () => {
     try {
       const token = await login({email: email, password: password}).unwrap();
-      console.log(login);
       storeData(token.accessToken, token.refreshToken);
       dispatch(
         setToken({
@@ -29,8 +28,10 @@ const Login = ({navigation}: any) => {
   };
   const storeData = async (accessToken: string, refreshToken: string) => {
     try {
-      await AsyncStorage.setItem('ACCESS_TOKEN', accessToken);
-      await AsyncStorage.setItem('REFRESH_TOKEN', refreshToken);
+      await AsyncStorage.setItem(
+        'TOKEN',
+        JSON.stringify({accessToken, refreshToken}),
+      );
     } catch (err) {
       console.log('error saving data!');
     }

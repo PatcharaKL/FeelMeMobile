@@ -1,29 +1,31 @@
 import {Layout, Text} from '@ui-kitten/components';
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {userContext} from '../../contexts/userContext';
 import useAuthorize from './useAuthorize copy';
-import {usePullToken} from '../../hooks/useAsynceStorage';
+import useAsyncStorage from '../../hooks/useAsyncStorage';
+import {setToken} from '../../features/auth/tokensSlicer';
+import {useAppDispatch} from '../../app/hook';
 // import theme from '../../assets/theme.json';
 
 const LandingPage = ({navigation}: any) => {
-  const isAuthorized = useAuthorize();
-  const {accessToken, refreshToken} = usePullToken();
-  const {setUserToken} = useContext(userContext);
-  console.log('authorized?: ' + isAuthorized);
-  console.log('Local Token: ' + accessToken, refreshToken);
+  const dispatch = useAppDispatch();
+  // const isAuthorized = useAuthorize();
+  // const [token] = useAsyncStorage('TOKEN');
+  // const {setUserToken} = useContext(userContext);
+
   const handleGetToken = async () => {
     try {
-      if (!isAuthorized) {
-        navigation.replace('Login');
-      } else {
-        setUserToken({
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          authenticated: true,
-        });
-        navigation.replace('Main');
-      }
+      // if (!token) {
+      //   navigation.replace('Login');
+      // } else {
+      //   dispatch(
+      //     setToken({
+      //       accessToken: token.accessToken,
+      //       refreshToken: token,
+      //     }),
+      //   );
+      // }
+      navigation.replace('Login');
     } catch (e) {
       console.log(e);
     }

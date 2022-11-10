@@ -5,16 +5,14 @@ import Login from './Login-Page/Login';
 import Main from './main-page/main-page';
 import LandingPage from './landing-page/landingPage';
 import Setting from './setting-page/setting';
-import ReduxTest from './redux-test/reduxTest';
 
 const {Navigator, Screen} = createStackNavigator();
 
 export const AppNavigator = () => (
   <NavigationContainer>
     <Navigator screenOptions={{headerShown: false}}>
-      <Screen name="Login" component={Login} />
-      <Screen name="Redux" component={ReduxTest} />
       <Screen name="landing-page" component={LandingPage} />
+      <Screen name="Login" component={Login} />
       <Screen name="Main" component={Main} />
       <Screen name="Setting" component={Setting} />
     </Navigator>
