@@ -1,14 +1,17 @@
 import {configureStore} from '@reduxjs/toolkit';
 import tokensReducer from '../features/auth/tokensSlicer';
+import userReducer from '../features/user/userSlice';
 import {apiSlice} from '../features/api/apiSlice';
 
 const store = configureStore({
   reducer: {
     tokens: tokensReducer,
+    user: userReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(apiSlice.middleware),
+  devTools: true,
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

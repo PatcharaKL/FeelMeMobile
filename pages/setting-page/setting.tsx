@@ -1,37 +1,53 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {Button, Layout, Text, Spinner} from '@ui-kitten/components';
 import {ThemeContext} from '../../contexts/theme';
 import {useAppSelector, useAppDispatch} from '../../app/hook';
-import {setToken} from '../../features/auth/tokensSlicer';
+import {logout} from '../../features/auth/tokensSlicer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useLogoutMutation} from '../../features/api/apiSlice';
+import {useApiLogoutMutation} from '../../features/api/apiSlice';
+import {setUser} from '../../features/user/userSlice';
+
 const Setting = ({navigation}: any) => {
   const dispatch = useAppDispatch();
-  const [logout, {isLoading, isSuccess}] = useLogoutMutation();
-  const tokens = useAppSelector(state => state.tokens);
+  const [apiLogout, {isLoading, isSuccess, isUninitialized}] =
+    useApiLogoutMutation();
+  const {accessToken, refreshToken}: any = useAppSelector(
+    state => state.tokens,
+  );
 
   const logOutHandler = async () => {
     try {
-      await AsyncStorage.removeItem('ACCESS_TOKEN');
-      await AsyncStorage.removeItem('REFRESH_TOKEN');
+      await AsyncStorage.removeItem('TOKEN');
       try {
-        await logout({accessToken: tokens.accessToken});
-        try {
-          dispatch(setToken({accessToken: '', refreshToken: ''}));
-        } catch (e) {
-          console.log(e);
-        }
+        await apiLogout({accessToken: accessToken, refreshToken: refreshToken});
       } catch (e) {
         console.log(e);
       }
     } catch (e) {
       console.log(e);
     }
-    console.log('Logged Out.');
-    navigation.replace('Login');
   };
-
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(logout());
+      dispatch(
+        setUser({
+          email: '',
+          name: '',
+          surname: '',
+          hp: 0,
+          level: 0,
+          departmentName: '',
+          positionName: '',
+          companyName: '',
+        }),
+      );
+      navigation.replace('Login');
+      console.log('Logged Out.');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, isUninitialized, isLoading]);
   const themeContext: any = useContext(ThemeContext);
   return (
     <SafeAreaView style={styles.container}>
@@ -43,8 +59,8 @@ const Setting = ({navigation}: any) => {
         <Layout style={styles.bottomBanner}>
           <Button onPress={themeContext.toggleTheme}>TOGGLE THEME</Button>
           <Button onPress={logOutHandler}>Logout</Button>
-          <Text>Access Token: {tokens.accessToken}</Text>
-          <Text>Access Token: {tokens.refreshToken}</Text>
+          <Text>Access Token: {accessToken}</Text>
+          <Text>Refresh Token: {refreshToken}</Text>
         </Layout>
       )}
     </SafeAreaView>

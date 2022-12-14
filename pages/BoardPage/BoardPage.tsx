@@ -1,17 +1,15 @@
 import {Layout, Text} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import ResourceLoader from './ResourceLoader';
-const LandingPage = ({navigation}: any) => {
+const BoardPage = () => {
   return (
     <Layout style={styles.container}>
       <Text style={styles.text} category="h1">
-        FeelMe
+        Board Page
       </Text>
       <Text style={styles.text} category="s1">
-        WELCOME :D
+        Comming soon..
       </Text>
-      <ResourceLoader navigation={navigation} />
     </Layout>
   );
 };
@@ -26,4 +24,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default LandingPage;
+export default BoardPage;

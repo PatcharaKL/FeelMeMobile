@@ -1,37 +1,72 @@
-import React, {useContext} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {
-  Button,
-  Divider,
-  Layout,
-  TopNavigation,
-  Text,
-} from '@ui-kitten/components';
-import {userContext} from '../../contexts/userContext';
-import {ThemeContext} from '../../contexts/theme';
+import React, {useEffect} from 'react';
+import {StyleSheet} from 'react-native';
+import {Divider, Layout, Spinner, TopNavigation} from '@ui-kitten/components';
 import HealthBar from './HealthBar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Character from './character';
-const Main = ({navigation}: any) => {
-  const navigateToSetting = () => {
-    navigation.navigate('Setting');
-  };
+import Setting from '../setting-page/setting';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import BottomTabBar from './BottomTabBar';
+import PeoplePage from '../PeoplesPage/PeoplesPage';
+import BoardPage from '../BoardPage/BoardPage';
+import {useUserDetailQuery} from '../../features/api/apiSlice';
+import {useAppDispatch, useAppSelector} from '../../app/hook';
+import {setHp} from '../../features/user/userSlice';
 
+const {Navigator, Screen} = createBottomTabNavigator();
+
+const Main = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Layout style={styles.container}>
-        <TopNavigation title="Feel Me" alignment="center" />
-        <Divider />
-        <HealthBar />
-        <Character />
-        {/* <View style={styles.bottomBanner}>
-          <Layout style={styles.bottomBannerLayout} level="2">
-            <Text category="h5">- STATUS -</Text>
-          </Layout>
-        </View> */}
-        <Button onPress={navigateToSetting}>Setting</Button>
-      </Layout>
-    </SafeAreaView>
+    <React.Fragment>
+      <TabNavigator />
+    </React.Fragment>
+  );
+};
+
+const InteractiveEmotionPage = () => {
+  const dispatch = useAppDispatch();
+  const {accessToken} = useAppSelector(state => state.tokens);
+  const {data, isSuccess, isLoading} = useUserDetailQuery({
+    accessToken: accessToken,
+  });
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setHp(data.hp));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+  return (
+    <Layout style={styles.container}>
+      {isLoading ? (
+        <Layout style={styles.spinner}>
+          <Spinner />
+        </Layout>
+      ) : (
+        <>
+          <HealthBar />
+          <Character />
+        </>
+      )}
+    </Layout>
+  );
+};
+
+const TabNavigator = () => {
+  return (
+    <>
+      <TopNavigation alignment="center" title="FeelMe" />
+      <Divider />
+      <Navigator
+        screenOptions={{headerShown: false}}
+        tabBar={props => <BottomTabBar {...props} />}>
+        <Screen
+          name="InteractiveEmotionPage"
+          component={InteractiveEmotionPage}
+        />
+        <Screen name="People" component={PeoplePage} />
+        <Screen name="Setting" component={BoardPage} />
+        <Screen name="Board" component={Setting} />
+      </Navigator>
+    </>
   );
 };
 
@@ -58,6 +93,11 @@ const styles = StyleSheet.create({
   bottomBannerLayout: {
     flex: 1,
     alignItems: 'center',
+  },
+  spinner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 export default Main;
