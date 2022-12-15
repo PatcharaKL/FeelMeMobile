@@ -19,12 +19,9 @@ const ResourceLoader = ({navigation}: any) => {
       let token: any = await AsyncStorage.getItem('TOKEN');
       try {
         if (!token) {
-          console.info('Have no token in storage');
           navigation.replace('Login');
         } else {
           token = JSON.parse(token);
-          console.info('Have token in storage.');
-          console.info('In storage token: ', token);
           dispatch(
             setToken({
               accessToken: token.accessToken,
@@ -41,12 +38,9 @@ const ResourceLoader = ({navigation}: any) => {
 
   useEffect(() => {
     if (isError) {
-      console.log('Navigating to Login page');
       navigation.replace('Login');
     } else if (isSuccess) {
-      console.log('From Loading Resource: ', data.hp);
       if (data.hp || data.hp === 0) {
-        console.log('Navigating to Main page');
         dispatch(setHp(data.hp));
         navigation.replace('Main');
       }

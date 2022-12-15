@@ -44,7 +44,6 @@ const Setting = ({navigation}: any) => {
         }),
       );
       navigation.replace('Login');
-      console.log('Logged Out.');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isUninitialized, isLoading]);

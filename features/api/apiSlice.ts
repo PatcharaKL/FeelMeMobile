@@ -129,14 +129,6 @@ export const apiSlice = createApi({
       }),
       providesTags: ['OtherUserList'],
     }),
-    dealDamage: builder.mutation({
-      query: formVal => ({
-        url: '/Log/AttackDamage',
-        method: 'POST',
-        body: formVal,
-      }),
-      invalidatesTags: ['User'],
-    }),
   }),
 });
 
@@ -145,6 +137,5 @@ export const {
   useRefreshAllTokenMutation,
   useApiLogoutMutation,
   useUserDetailQuery,
-  useDealDamageMutation,
   useUserListDetailQuery,
 } = apiSlice;
