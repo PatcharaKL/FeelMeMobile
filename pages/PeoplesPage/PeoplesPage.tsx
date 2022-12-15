@@ -7,7 +7,7 @@ import {
   Spinner,
   Text,
 } from '@ui-kitten/components';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useUserListDetailQuery} from '../../features/api/apiSlice';
@@ -32,17 +32,16 @@ const PeoplePage = () => {
   return (
     <Layout style={styles.container}>
       <Divider />
+      <SearchBar value={searchValue} setValue={setSearchValue} />
       {isLoading ? (
         <Spinner />
       ) : (
-        <>
-          <SearchBar value={searchValue} setValue={setSearchValue} />
-          <FlatList
-            contentContainerStyle={styles.contentContainer}
-            data={searchByName()}
-            renderItem={PeoplesCard}
-          />
-        </>
+        <FlatList
+          contentContainerStyle={styles.contentContainer}
+          data={searchByName()}
+          renderItem={PeoplesCard}
+          showsVerticalScrollIndicator={false}
+        />
       )}
     </Layout>
   );
@@ -100,16 +99,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff0000dd',
   },
 });
-
-interface UsersData {
-  item: {
-    id: string;
-    name: string;
-    surname: string;
-    position: string;
-    level: number;
-    department: string;
-    hp: number;
-  };
-}
 export default PeoplePage;
