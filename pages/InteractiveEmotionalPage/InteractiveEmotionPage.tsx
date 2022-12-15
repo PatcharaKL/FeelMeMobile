@@ -6,6 +6,7 @@ import Character from '../InteractiveEmotionalPage/character';
 import {useUserDetailQuery} from '../../features/api/apiSlice';
 import {useAppDispatch, useAppSelector} from '../../app/hook';
 import {setHp} from '../../features/user/userSlice';
+import Weapon from './weapon';
 const InteractiveEmotionPage = () => {
   const dispatch = useAppDispatch();
   const {accessToken} = useAppSelector(state => state.tokens);
@@ -28,6 +29,7 @@ const InteractiveEmotionPage = () => {
         <>
           <HealthBar />
           <Character />
+          <Weapon />
         </>
       )}
     </Layout>
@@ -36,26 +38,7 @@ const InteractiveEmotionPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  nameBanner: {
-    marginTop: 50,
-    marginBottom: 10,
-    alignItems: 'center',
-  },
-  button: {
-    marginVertical: 10,
-    marginHorizontal: 10,
-  },
-  bottomBanner: {
-    flex: 1,
-    marginHorizontal: 40,
-    borderRadius: 15,
-    backgroundColor: '#20243c',
-    overflow: 'hidden',
-  },
-  bottomBannerLayout: {
-    flex: 1,
-    alignItems: 'center',
+    padding: 15,
   },
   spinner: {
     flex: 1,

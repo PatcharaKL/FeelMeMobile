@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {Divider, TopNavigation} from '@ui-kitten/components';
 import Setting from '../setting-page/setting';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';

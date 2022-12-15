@@ -40,7 +40,7 @@ const HealthBar = () => {
     };
   });
   return (
-    <Layout>
+    <Layout level="2" style={styles.container}>
       {isLoading ? (
         <Layout style={styles.spinner}>
           <Spinner size="large" />
@@ -77,14 +77,15 @@ const HealthBar = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 2,
+    justifyContent: 'center',
+    borderRadius: 30,
+  },
   nameBanner: {
-    marginTop: 50,
     marginBottom: 10,
     alignItems: 'center',
-  },
-  button: {
-    marginVertical: 10,
-    marginHorizontal: 10,
+    justifyContent: 'center',
   },
   hpBar: {
     paddingHorizontal: 5,

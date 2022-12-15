@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Images from '../../assets/image';
 import {Image, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {Layout, Spinner} from '@ui-kitten/components';
-import {useDealDamageMutation} from '../../features/api/apiSlice';
+import {useDealDamageMutation} from './InteractivePageAPI';
 import useDebounce from '../../hooks/useDebouce';
 import {useAppDispatch} from '../../app/hook';
 import {decreaseHp} from '../../features/user/userSlice';
@@ -42,13 +42,13 @@ const Character = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 3,
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 300,
   },
 });
 export default Character;
