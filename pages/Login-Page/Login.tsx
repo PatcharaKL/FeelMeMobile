@@ -7,7 +7,6 @@ import {setToken} from '../../features/auth/tokensSlicer';
 import {useAppDispatch} from '../../app/hook';
 
 const Login = ({navigation}: any) => {
-  console.log('Login page render');
   return (
     <>
       <Layout style={styles.container}>
