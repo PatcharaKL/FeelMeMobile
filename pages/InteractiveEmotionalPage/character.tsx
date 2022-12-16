@@ -4,22 +4,24 @@ import {Image, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {Layout, Spinner} from '@ui-kitten/components';
 import {useDealDamageMutation} from './InteractivePageAPI';
 import useDebounce from '../../hooks/useDebouce';
-import {useAppDispatch} from '../../app/hook';
+import {useAppDispatch, useAppSelector} from '../../app/hook';
 import {decreaseHp} from '../../features/user/userSlice';
 
 const Character = () => {
   const [dealDamage, {isLoading}] = useDealDamageMutation();
+  const {selectedTypeId} = useAppSelector(state => state.weapon);
+  const {hp} = useAppSelector(state => state.user);
   const [damage, setDamage] = useState(0);
   const debounceDamage = useDebounce(damage, 500);
   const dispatch = useAppDispatch();
-  const DMG = 15;
+  const DMG = 10;
   const dmgHandler = () => {
     setDamage(() => damage + DMG);
     dispatch(decreaseHp(DMG));
   };
   useEffect(() => {
     const dealDamageHandler = async () => {
-      await dealDamage({type: 1, amount: damage});
+      await dealDamage({type: selectedTypeId, amount: damage});
     };
     if (debounceDamage) {
       dealDamageHandler();
@@ -27,14 +29,26 @@ const Character = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceDamage]);
-
+  const avatar = () => {
+    if (hp <= 100 && hp > 75) {
+      return Images.monkeys.monkey_100;
+    } else if (hp <= 75 && hp >= 50) {
+      return Images.monkeys.monkey_75;
+    } else if (hp <= 50 && hp >= 25) {
+      return Images.monkeys.monkey_25;
+    } else if (hp <= 25 && hp >= 0) {
+      return Images.monkeys.monkey_0;
+    } else {
+      return Images.monkeys.monkey_0;
+    }
+  };
   return (
     <Layout style={styles.container}>
       {isLoading ? (
         <Spinner />
       ) : (
         <TouchableWithoutFeedback onPress={dmgHandler}>
-          <Image source={Images.pumpkin_happy} style={styles.image} />
+          <Image source={avatar()} style={styles.image} />
         </TouchableWithoutFeedback>
       )}
     </Layout>

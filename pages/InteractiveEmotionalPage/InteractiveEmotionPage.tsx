@@ -10,15 +10,18 @@ import Weapon from './weapon';
 const InteractiveEmotionPage = () => {
   const dispatch = useAppDispatch();
   const {accessToken} = useAppSelector(state => state.tokens);
-  const {data, isSuccess, isLoading} = useUserDetailQuery({
-    accessToken: accessToken,
-  });
+  const {data, isSuccess, isLoading} = useUserDetailQuery(
+    {
+      accessToken: accessToken,
+    },
+    {refetchOnMountOrArgChange: 2},
+  );
   useEffect(() => {
     if (isSuccess) {
       dispatch(setHp(data.hp));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  }, [isSuccess, data.hp]);
   return (
     <Layout style={styles.container}>
       {isLoading ? (

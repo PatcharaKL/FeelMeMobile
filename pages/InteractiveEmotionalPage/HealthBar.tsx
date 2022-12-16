@@ -14,9 +14,12 @@ import Animated, {
 const HealthBar = () => {
   const {accessToken} = useAppSelector(state => state.tokens);
   const {hp} = useAppSelector(state => state.user);
-  const {data, isLoading} = useUserDetailQuery({
-    accessToken: accessToken,
-  });
+  const {data, isLoading} = useUserDetailQuery(
+    {
+      accessToken: accessToken,
+    },
+    {refetchOnMountOrArgChange: true},
+  );
 
   const hpBar = useSharedValue(hp);
   const derivedHp = useDerivedValue(() => {
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 2,
     justifyContent: 'center',
-    borderRadius: 30,
+    borderRadius: 20,
   },
   nameBanner: {
     marginBottom: 10,

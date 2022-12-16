@@ -2,11 +2,13 @@ import {configureStore} from '@reduxjs/toolkit';
 import tokensReducer from '../features/auth/tokensSlicer';
 import userReducer from '../features/user/userSlice';
 import {apiSlice} from '../features/api/apiSlice';
+import weaponReducer from '../features/user/weaponSlice';
 
 const store = configureStore({
   reducer: {
     tokens: tokensReducer,
     user: userReducer,
+    weapon: weaponReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: getDefaultMiddleware =>

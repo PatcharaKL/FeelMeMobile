@@ -4,6 +4,7 @@ import {
   BottomNavigationTab,
   Icon,
 } from '@ui-kitten/components';
+
 const BottomTabBar = ({navigation, state}: any) => {
   const SmilingFaceIcon = (props: any) => {
     return <Icon {...props} animation={'pulse'} name="smiling-face" />;
