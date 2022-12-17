@@ -20,7 +20,7 @@ const InteractiveEmotionPage = () => {
       dispatch(setHp(data.hp));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, data.hp]);
+  }, [isSuccess, data?.hp]);
   return (
     <Layout style={styles.container}>
       {isLoading ? (
