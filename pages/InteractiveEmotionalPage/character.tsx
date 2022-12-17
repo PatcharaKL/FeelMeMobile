@@ -34,6 +34,7 @@ const Character = () => {
       transform: [{rotate: `${avatarRotate.value}deg`}],
     };
   });
+
   const dmgHandler = () => {
     setDamage(() => damage + DMG);
     dispatch(decreaseHp(DMG));
@@ -56,6 +57,12 @@ const Character = () => {
       avatarOpacity.value = withTiming(0.3, {duration: 200});
     }
   };
+
+  useEffect(() => {
+    avatarOpacity.value = hp === 0 ? 0.3 : 1;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hp]);
+
   useEffect(() => {
     const dealDamageHandler = async () => {
       await dealDamage({type: selectedTypeId, amount: damage});
@@ -79,16 +86,12 @@ const Character = () => {
       return Images.monkeys.monkey_0;
     }
   };
-  useEffect(() => {
-    avatarOpacity.value = hp === 0 ? 0.3 : 1;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hp]);
   return (
     <Layout style={styles.container}>
       <TouchableWithoutFeedback
         disabled={isLoading || hp === 0}
         onPress={dmgHandler}>
-        <Animated.Image source={avatar()} style={[avatarTakingDmg]} />
+        <Animated.Image source={avatar()} style={[avatarTakingDmg, ,]} />
       </TouchableWithoutFeedback>
     </Layout>
   );
@@ -98,10 +101,6 @@ const styles = StyleSheet.create({
     flex: 3,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  image: {
-    width: 300,
-    height: 300,
   },
 });
 export default Character;
