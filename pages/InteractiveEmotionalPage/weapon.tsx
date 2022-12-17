@@ -1,6 +1,6 @@
 import React from 'react';
-import {Layout, Text, Avatar} from '@ui-kitten/components';
-import {StyleSheet, ImageBackground} from 'react-native';
+import {Layout, Text, Avatar, Divider} from '@ui-kitten/components';
+import {StyleSheet, ImageBackground, View} from 'react-native';
 import {FlatList, TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {useWeaponListQuery} from './InteractivePageAPI';
 import {setSelectedWeapon} from '../../features/user/weaponSlice';
@@ -38,6 +38,10 @@ const WeaponList = () => {
   return (
     <>
       <Layout style={styles.container}>
+        <View style={styles.weaponHeader}>
+          <Text category="h6">What hits you?</Text>
+          <Divider style={styles.headerText} />
+        </View>
         {isSuccess && (
           <FlatList
             horizontal={true}
@@ -56,19 +60,25 @@ const WeaponList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: 20,
   },
   flatList: {
     alignItems: 'center',
   },
   touchable: {
     height: '100%',
-    width: 100,
+    width: 80,
     alignItems: 'center',
     justifyContent: 'center',
   },
   selectedLayout: {
-    borderRadius: 30,
+    borderRadius: 10,
+  },
+  headerText: {
+    paddingBottom: 10,
+  },
+  weaponHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 export default WeaponList;

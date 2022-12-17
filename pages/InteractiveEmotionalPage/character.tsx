@@ -25,7 +25,7 @@ const Character = () => {
   const avatarWidth = useSharedValue(350);
   const avatarHeight = useSharedValue(350);
   const avatarRotate = useSharedValue(0);
-  const avatarOpacity = useSharedValue(hp === 0 ? 0.3 : 1);
+  const avatarOpacity = useSharedValue(1);
   const avatarTakingDmg = useAnimatedStyle(() => {
     return {
       width: avatarWidth.value,
@@ -79,7 +79,10 @@ const Character = () => {
       return Images.monkeys.monkey_0;
     }
   };
-
+  useEffect(() => {
+    avatarOpacity.value = hp === 0 ? 0.3 : 1;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hp]);
   return (
     <Layout style={styles.container}>
       <TouchableWithoutFeedback
