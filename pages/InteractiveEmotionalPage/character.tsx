@@ -1,11 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import Images from '../../assets/image';
-import {Image, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {Layout} from '@ui-kitten/components';
 import {useDealDamageMutation} from './InteractivePageAPI';
 import useDebounce from '../../hooks/useDebouce';
 import {useAppDispatch, useAppSelector} from '../../app/hook';
 import {decreaseHp} from '../../features/user/userSlice';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 
 const Character = () => {
   const [dealDamage, {isLoading}] = useDealDamageMutation();
@@ -16,11 +22,47 @@ const Character = () => {
   const dispatch = useAppDispatch();
   const DMG = 3;
 
+  const avatarWidth = useSharedValue(350);
+  const avatarHeight = useSharedValue(350);
+  const avatarRotate = useSharedValue(0);
+  const avatarOpacity = useSharedValue(1);
+  const avatarTakingDmg = useAnimatedStyle(() => {
+    return {
+      width: avatarWidth.value,
+      height: avatarHeight.value,
+      opacity: avatarOpacity.value,
+      transform: [{rotate: `${avatarRotate.value}deg`}],
+    };
+  });
+
   const dmgHandler = () => {
-    console.log('Character', hp);
     setDamage(() => damage + DMG);
     dispatch(decreaseHp(DMG));
+    const randomRotateValue = (min: number, max: number) => {
+      return Math.random() * (max - min) + min;
+    };
+    avatarWidth.value = withSequence(
+      withTiming(250, {duration: 50}),
+      withTiming(350, {duration: 50}),
+    );
+    avatarHeight.value = withSequence(
+      withTiming(250, {duration: 50}),
+      withTiming(350, {duration: 50}),
+    );
+    avatarRotate.value = withSequence(
+      withTiming(randomRotateValue(-10, 10), {duration: 50}),
+      withTiming(0, {duration: 50}),
+    );
+    if (hp <= 0) {
+      avatarOpacity.value = withTiming(0.3, {duration: 200});
+    }
   };
+
+  useEffect(() => {
+    avatarOpacity.value = hp === 0 ? 0.3 : 1;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hp]);
+
   useEffect(() => {
     const dealDamageHandler = async () => {
       await dealDamage({type: selectedTypeId, amount: damage});
@@ -44,14 +86,12 @@ const Character = () => {
       return Images.monkeys.monkey_0;
     }
   };
-  const opacity = hp === 0 ? 0.3 : 1;
-
   return (
     <Layout style={styles.container}>
       <TouchableWithoutFeedback
         disabled={isLoading || hp === 0}
         onPress={dmgHandler}>
-        <Image source={avatar()} style={[styles.image, {opacity}]} />
+        <Animated.Image source={avatar()} style={[avatarTakingDmg, ,]} />
       </TouchableWithoutFeedback>
     </Layout>
   );
@@ -61,10 +101,6 @@ const styles = StyleSheet.create({
     flex: 3,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  image: {
-    width: 300,
-    height: 300,
   },
 });
 export default Character;

@@ -41,7 +41,7 @@ const App = () => {
         <ThemeContext.Provider value={{theme, toggleTheme}}>
           <Provider store={store}>
             <IconRegistry icons={EvaIconsPack} />
-            <ApplicationProvider {...eva} theme={eva[appearance]}>
+            <ApplicationProvider {...eva} theme={eva[theme]}>
               <AppNavigator />
             </ApplicationProvider>
           </Provider>
