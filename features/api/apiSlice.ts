@@ -17,15 +17,11 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log(args, result);
   if (result?.error?.status === 401) {
     console.log('sending refresh token');
     try {
-      console.log('Getting token from storage..');
       let token: any = await AsyncStorage.getItem('TOKEN');
-      console.log('Success! Got token from storage.');
       token = JSON.parse(token);
-      console.log('ReAuth body: ', token);
       // send refresh token to get new access token
       try {
         const refreshResult: any = await baseQuery(
@@ -37,7 +33,6 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
           api,
           extraOptions,
         );
-        console.log('refetch result: ', refreshResult);
         if (refreshResult?.data) {
           console.log('refetch success');
           // store the new token
@@ -49,8 +44,8 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
             refreshToken,
           });
           // retry the original query with new access token
+          console.log('successfully retry the original query');
           result = await baseQuery(args, api, extraOptions);
-          console.log('Second Attempt result', result);
         } else {
           console.log('refetch failed');
           api.dispatch(logout());

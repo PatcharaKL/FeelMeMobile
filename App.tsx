@@ -10,6 +10,7 @@
 
 import React, {useState} from 'react';
 
+import {Appearance} from 'react-native';
 import 'react-native-gesture-handler';
 import * as eva from '@eva-design/eva';
 import {userContext} from './contexts/userContext';
@@ -22,19 +23,15 @@ import {Provider} from 'react-redux';
 import store from './app/store';
 
 const App = () => {
+  const appearance: any = Appearance.getColorScheme();
+  console.log(appearance);
   const [userToken, setUserToken] = useState({
     accessToken: null,
     refreshToken: null,
     authenticated: false,
   });
-  const [theme, setTheme] = useState('dark');
-  const [test, setTest] = useState(eva.light);
+  const [theme, setTheme] = useState(appearance);
   const toggleTheme = () => {
-    if (theme === 'light') {
-      setTest(eva.light);
-    } else if (theme === 'dark') {
-      setTest(eva.dark);
-    }
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
   };
@@ -44,7 +41,7 @@ const App = () => {
         <ThemeContext.Provider value={{theme, toggleTheme}}>
           <Provider store={store}>
             <IconRegistry icons={EvaIconsPack} />
-            <ApplicationProvider {...eva} theme={eva[theme]}>
+            <ApplicationProvider {...eva} theme={eva[appearance]}>
               <AppNavigator />
             </ApplicationProvider>
           </Provider>

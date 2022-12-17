@@ -14,11 +14,13 @@ const InteractiveEmotionPage = () => {
     accessToken: accessToken,
   });
   useEffect(() => {
+    console.log('triggered!', isSuccess);
     if (isSuccess) {
+      console.log('Dispatching hp');
       dispatch(setHp(data.hp));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  }, [isSuccess, data?.hp]);
   return (
     <Layout style={styles.container}>
       {isLoading ? (

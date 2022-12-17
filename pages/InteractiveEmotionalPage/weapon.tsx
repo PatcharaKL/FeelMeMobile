@@ -1,17 +1,43 @@
-import {Layout, Text, Avatar} from '@ui-kitten/components';
 import React from 'react';
+import {Layout, Text, Avatar} from '@ui-kitten/components';
 import {StyleSheet, ImageBackground} from 'react-native';
-import {
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import {FlatList, TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {useWeaponListQuery} from './InteractivePageAPI';
+import {setSelectedWeapon} from '../../features/user/weaponSlice';
+import {useAppDispatch, useAppSelector} from '../../app/hook';
 const WeaponList = () => {
-  const {data, isSuccess, isError, isLoading} = useWeaponListQuery({});
+  const {data, isSuccess} = useWeaponListQuery({});
+  const {selectedTypeId} = useAppSelector(state => state.weapon);
+  const dispatch = useAppDispatch();
+  const selectWeaponHandler = (weaponType: number) => {
+    dispatch(setSelectedWeapon(weaponType));
+  };
+  const Weapon = ({item}: any) => {
+    const backgroundColor = item.weaponsId === selectedTypeId ? '4' : '1';
+    const opacity = item.weaponsId === selectedTypeId ? 1 : 0.3;
+    return (
+      <>
+        <Layout level={backgroundColor} style={styles.selectedLayout}>
+          <TouchableWithoutFeedback
+            onPress={() => selectWeaponHandler(item.weaponsId)}
+            style={[styles.touchable, {opacity}]}>
+            <Avatar
+              size="medium"
+              source={{
+                uri: item.urlWeapon,
+              }}
+              ImageComponent={ImageBackground}
+            />
+            <Text category="label">{item.weaponName}</Text>
+          </TouchableWithoutFeedback>
+        </Layout>
+      </>
+    );
+  };
+
   return (
     <>
-      <Layout level="2" style={styles.container}>
+      <Layout style={styles.container}>
         {isSuccess && (
           <FlatList
             horizontal={true}
@@ -19,24 +45,10 @@ const WeaponList = () => {
             renderItem={Weapon}
             contentContainerStyle={styles.flatList}
             showsHorizontalScrollIndicator={false}
+            keyExtractor={item => item.weaponsId}
           />
         )}
       </Layout>
-    </>
-  );
-};
-const Weapon = ({item}: any) => {
-  return (
-    <>
-      <TouchableOpacity style={styles.touchable}>
-        <Avatar
-          source={{
-            uri: item.urlWeapon,
-          }}
-          ImageComponent={ImageBackground}
-        />
-        <Text category="s1">{item.weaponName}</Text>
-      </TouchableOpacity>
     </>
   );
 };
@@ -44,15 +56,19 @@ const Weapon = ({item}: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: 30,
+    borderRadius: 20,
   },
   flatList: {
     alignItems: 'center',
   },
   touchable: {
+    height: '100%',
     width: 100,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedLayout: {
+    borderRadius: 30,
   },
 });
 export default WeaponList;
