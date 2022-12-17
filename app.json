@@ -1,4 +1,8 @@
 {
   "name": "FeelMe",
-  "displayName": "FeelMe"
+  "displayName": "FeelMe",
+  "userInterfaceStyle": "automatic",
+  "android": {
+    "userInterfaceStyle": "automatic"
+  }
 }

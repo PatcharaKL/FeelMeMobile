@@ -14,13 +14,11 @@ import Animated, {
 const HealthBar = () => {
   const {accessToken} = useAppSelector(state => state.tokens);
   const {hp} = useAppSelector(state => state.user);
-  const {data, isLoading} = useUserDetailQuery(
-    {
-      accessToken: accessToken,
-    },
-    {refetchOnMountOrArgChange: true},
-  );
-
+  console.log(hp);
+  const {data, isLoading} = useUserDetailQuery({
+    accessToken: accessToken,
+  });
+  // Client-Side HP animation
   const hpBar = useSharedValue(hp);
   const derivedHp = useDerivedValue(() => {
     hpBar.value = hp;
@@ -31,7 +29,7 @@ const HealthBar = () => {
       width: withTiming(`${derivedHp.value}%`, {duration: 500}),
     };
   });
-
+  // Sever-Side HP animation
   const serverHpBar = useSharedValue(data.hp);
   const serverDeriveHpBar = useDerivedValue(() => {
     serverHpBar.value = data.hp;
@@ -42,6 +40,7 @@ const HealthBar = () => {
       width: withTiming(`${serverDeriveHpBar.value}%`, {duration: 500}),
     };
   });
+  // User Details Top Component
   return (
     <Layout level="2" style={styles.container}>
       {isLoading ? (

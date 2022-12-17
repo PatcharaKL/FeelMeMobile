@@ -9,5 +9,8 @@ const monkeys = {
   monkey_25: require('./Images/Monkeys/sad.png'),
   monkey_0: require('./Images/Monkeys/knocked-out.png'),
 };
+const logo = {
+  logo_1: require('./Images/Logo/4310173.png'),
+};
 
-export default Images = {pumpkins, monkeys};
+export default Images = {pumpkins, monkeys, logo};

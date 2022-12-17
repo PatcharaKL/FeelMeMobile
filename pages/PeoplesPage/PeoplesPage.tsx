@@ -7,8 +7,9 @@ import {
   Spinner,
   Text,
 } from '@ui-kitten/components';
+import Images from '../../assets/image';
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Image} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useUserListDetailQuery} from '../../features/api/apiSlice';
 const PeoplePage = () => {
@@ -47,9 +48,31 @@ const PeoplePage = () => {
   );
 };
 const PeoplesCard = ({item}: any) => {
+  const avatar = () => {
+    if (item.hp <= 100 && item.hp > 75) {
+      return Images.monkeys.monkey_100;
+    } else if (item.hp <= 75 && item.hp > 50) {
+      return Images.monkeys.monkey_75;
+    } else if (item.hp <= 50 && item.hp > 25) {
+      return Images.monkeys.monkey_50;
+    } else if (item.hp <= 25 && item.hp > 0) {
+      return Images.monkeys.monkey_25;
+    } else {
+      return Images.monkeys.monkey_0;
+    }
+  };
+  const cardStatus = () => {
+    if (item.hp <= 100 && item.hp > 50) {
+      return 'success';
+    } else if (item.hp <= 50 && item.hp > 0) {
+      return 'warning';
+    } else if (item.hp <= 0) {
+      return 'danger';
+    }
+  };
   return (
-    <Card status="basic" style={styles.card} header={Header({item})}>
-      <Text>HP: {item.hp}</Text>
+    <Card status={cardStatus()} style={styles.card} header={Header({item})}>
+      <Image source={avatar()} style={[styles.image]} />
     </Card>
   );
 };
@@ -93,10 +116,15 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 5,
-    marginTop: 10,
+    marginBottom: 30,
   },
   flatListContainer: {
     backgroundColor: '#ff0000dd',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
   },
 });
 export default PeoplePage;

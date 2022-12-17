@@ -4,7 +4,7 @@ interface Weapon {
   selectedTypeId: number;
 }
 const initialState: Weapon = {
-  selectedTypeId: 0,
+  selectedTypeId: 1,
 };
 const weaponSlice = createSlice({
   name: 'user',
