@@ -10,11 +10,12 @@ import Weapon from './weapon';
 const InteractiveEmotionPage = () => {
   const dispatch = useAppDispatch();
   const {accessToken} = useAppSelector(state => state.tokens);
+  const {hp} = useAppSelector(state => state.user);
   const {data, isSuccess, isLoading} = useUserDetailQuery({
     accessToken: accessToken,
   });
   useEffect(() => {
-    console.log('triggered!', isSuccess);
+    console.log('triggered!', isSuccess, isLoading, data.hp, hp);
     if (isSuccess) {
       console.log('Dispatching hp');
       dispatch(setHp(data.hp));

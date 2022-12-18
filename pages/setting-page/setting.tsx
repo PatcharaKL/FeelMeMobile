@@ -46,7 +46,7 @@ const Setting = ({navigation}: any) => {
       navigation.replace('Login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, isUninitialized, isLoading]);
+  }, [isSuccess, isLoading]);
   const themeContext: any = useContext(ThemeContext);
   return (
     <SafeAreaView style={styles.container}>

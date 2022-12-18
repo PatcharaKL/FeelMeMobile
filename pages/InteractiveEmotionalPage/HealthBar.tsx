@@ -14,7 +14,6 @@ import Animated, {
 const HealthBar = () => {
   const {accessToken} = useAppSelector(state => state.tokens);
   const {hp} = useAppSelector(state => state.user);
-  console.log(hp);
   const {data, isLoading} = useUserDetailQuery({
     accessToken: accessToken,
   });
