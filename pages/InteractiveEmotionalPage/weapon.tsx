@@ -38,10 +38,7 @@ const WeaponList = () => {
   return (
     <>
       <Layout style={styles.container}>
-        <View style={styles.weaponHeader}>
-          <Text category="h6">What hits you?</Text>
-          <Divider style={styles.headerText} />
-        </View>
+        <Text style={styles.headerText} category="h6">What hits you?</Text>
         {isSuccess && (
           <FlatList
             horizontal={true}
@@ -74,11 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   headerText: {
-    paddingBottom: 10,
-  },
-  weaponHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginBottom: 10,
   },
 });
 export default WeaponList;
