@@ -109,17 +109,17 @@ export const apiSlice = createApi({
       invalidatesTags: ['Token'],
     }),
     userDetail: builder.query({
-      query: formVal => ({
-        url: '/User/GetUserDetail',
+      query: fromVal => ({
+        url: `/users/employees/${fromVal.id}`,
         method: 'POST',
-        body: formVal,
+        body: fromVal.body,
       }),
       providesTags: ['User'],
     }),
     userListDetail: builder.query({
       query: formVal => ({
-        url: '/User/GetEnemyDetail',
-        method: 'POST',
+        url: '/users/employees',
+        method: 'GET',
         body: formVal,
       }),
       providesTags: ['OtherUserList'],
