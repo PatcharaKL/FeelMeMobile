@@ -86,7 +86,7 @@ export const apiSlice = createApi({
   endpoints: builder => ({
     login: builder.mutation({
       query: formVal => ({
-        url: '/User/UserLogin',
+        url: '/login',
         method: 'POST',
         body: formVal,
       }),
