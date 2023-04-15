@@ -68,6 +68,34 @@ const CircleButton = ({questionID, buttonID, value}: any) => {
   const selectedAnswer = useAppSelector(state =>
     state.questionnaire.filter(question => question.id === questionID),
   );
+  const circleSize = () => {
+    if (buttonID === 1) {
+      return {
+        width: 30,
+        height: 30,
+      };
+    } else if (buttonID === 2) {
+      return {
+        width: 35,
+        height: 35,
+      };
+    } else if (buttonID === 3) {
+      return {
+        width: 40,
+        height: 40,
+      };
+    } else if (buttonID === 4) {
+      return {
+        width: 45,
+        height: 45,
+      };
+    } else if (buttonID === 5) {
+      return {
+        width: 50,
+        height: 50,
+      };
+    }
+  };
   const selectedHandler = () => {
     dispatch(
       setAnswer({
@@ -84,8 +112,8 @@ const CircleButton = ({questionID, buttonID, value}: any) => {
         onPress={() => selectedHandler()}
         style={
           selectedAnswer[0]?.selectedID !== buttonID
-            ? styles.button
-            : [styles.button, {backgroundColor: 'black'}]
+            ? [styles.button, circleSize()]
+            : [styles.button, {backgroundColor: 'black'}, circleSize()]
         }
       />
       {/* {selectedAnswer.map(ans => {
@@ -127,6 +155,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   button: {
     borderWidth: 4,
