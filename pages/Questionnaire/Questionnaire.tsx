@@ -14,8 +14,10 @@ const Questionnaire = () => {
   return (
     <View style={styles.container}>
       {/* <Text>Hello Questionnaire</Text> */}
+      <Text category="h3">How was your feel?</Text>
+      <Text category="p1">We wonder how was your day!</Text>
       <Questions />
-      <Button onPress={submitHandler} status="success" size="large">
+      <Button onPress={submitHandler} status="primary" size="large">
         Confirm
       </Button>
     </View>
@@ -42,7 +44,7 @@ const Questions = () => {
 const Question = ({id, question}: any) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.question} key={id}>
+      <Text style={styles.question} category="s1" key={id}>
         {question}
       </Text>
       <Rating questionID={id} />
@@ -96,6 +98,29 @@ const CircleButton = ({questionID, buttonID, value}: any) => {
       };
     }
   };
+  const selectedColor = () => {
+    if (buttonID === 1) {
+      return {
+        backgroundColor: '#ee6055',
+      };
+    } else if (buttonID === 2) {
+      return {
+        backgroundColor: '#ff9b85',
+      };
+    } else if (buttonID === 3) {
+      return {
+        backgroundColor: '#ffd97d',
+      };
+    } else if (buttonID === 4) {
+      return {
+        backgroundColor: '#aaf683',
+      };
+    } else if (buttonID === 5) {
+      return {
+        backgroundColor: '#60d394',
+      };
+    }
+  };
   const selectedHandler = () => {
     dispatch(
       setAnswer({
@@ -113,7 +138,7 @@ const CircleButton = ({questionID, buttonID, value}: any) => {
         style={
           selectedAnswer[0]?.selectedID !== buttonID
             ? [styles.button, circleSize()]
-            : [styles.button, {backgroundColor: 'black'}, circleSize()]
+            : [styles.button, selectedColor(), circleSize()]
         }
       />
       {/* {selectedAnswer.map(ans => {
@@ -138,8 +163,6 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   question: {
-    fontSize: 18,
-    fontWeight: 'bold',
     textAlign: 'center',
   },
   card: {
@@ -158,9 +181,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    borderWidth: 4,
-    width: 45,
-    height: 45,
+    borderWidth: 3,
     borderRadius: 100,
   },
 });
