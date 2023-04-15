@@ -3,12 +3,14 @@ import tokensReducer from '../features/auth/tokensSlicer';
 import userReducer from '../features/user/userSlice';
 import {apiSlice} from '../features/api/apiSlice';
 import weaponReducer from '../features/user/weaponSlice';
+import questionnaireReducer from '../features/user/questionnaireSlice';
 
 const store = configureStore({
   reducer: {
     tokens: tokensReducer,
     user: userReducer,
     weapon: weaponReducer,
+    questionnaire: questionnaireReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
