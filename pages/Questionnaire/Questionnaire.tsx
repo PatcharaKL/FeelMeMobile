@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text} from '@ui-kitten/components';
+import {Button, Text} from '@ui-kitten/components';
 import {StyleSheet, View} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {useAppDispatch, useAppSelector} from '../../app/hook';
@@ -7,10 +7,17 @@ import {setAnswer} from '../../features/user/questionnaireSlice';
 // import { View } from 'react-native';
 
 const Questionnaire = () => {
+  const submitHandler = () => {
+    // TODO send result to backend
+  };
+
   return (
     <View style={styles.container}>
       {/* <Text>Hello Questionnaire</Text> */}
       <Questions />
+      <Button onPress={submitHandler} status="success" size="large">
+        Confirm
+      </Button>
     </View>
   );
 };
