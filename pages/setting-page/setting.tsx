@@ -10,8 +10,7 @@ import {setUser} from '../../features/user/userSlice';
 
 const Setting = ({navigation}: any) => {
   const dispatch = useAppDispatch();
-  const [apiLogout, {isLoading, isSuccess, isUninitialized}] =
-    useApiLogoutMutation();
+  const [apiLogout, {isLoading, isSuccess}] = useApiLogoutMutation();
   const {accessToken, refreshToken}: any = useAppSelector(
     state => state.tokens,
   );
