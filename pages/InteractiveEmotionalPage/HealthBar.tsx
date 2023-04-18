@@ -54,10 +54,10 @@ const HealthBar = () => {
               {data?.name} {data?.surname}
             </Text>
             <Text category="s1">
-              {data?.positionName} {`LVL.${data?.level}`}
+              {data?.position_name} {`LVL.${data?.level}`}
             </Text>
             <Text category="s1">
-              {data?.companyName} {data?.departmentName}
+              {data?.company_name} {data?.department_name}
             </Text>
           </View>
           <Animated.View style={styles.hpBar}>
