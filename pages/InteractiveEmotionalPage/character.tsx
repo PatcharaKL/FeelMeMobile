@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Images from '../../assets/image';
-import {StyleSheet, Text, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {Layout} from '@ui-kitten/components';
 import {useDealDamageMutation} from './InteractivePageAPI';
 import useDebounce from '../../hooks/useDebouce';
@@ -14,7 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const Character = () => {
-  const [dealDamage, {isLoading, error, isSuccess, isError, isUninitialized}] = useDealDamageMutation();
+  const [dealDamage, {isLoading}] = useDealDamageMutation();
   // const {selectedTypeId} = useAppSelector(state => state.weapon);
   const {hp} = useAppSelector(state => state.user);
   const [damage, setDamage] = useState(0);
@@ -65,7 +65,7 @@ const Character = () => {
 
   useEffect(() => {
     const dealDamageHandler = async () => {
-      await dealDamage({amount: damage}).then(e => console.log(e));
+      await dealDamage({amount: damage}).catch(e => console.log(e));
     };
     if (debounceDamage) {
       dealDamageHandler();
