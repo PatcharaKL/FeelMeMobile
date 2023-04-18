@@ -3,7 +3,7 @@ const interactiveAPI = apiSlice.injectEndpoints({
   endpoints: build => ({
     dealDamage: build.mutation({
       query: formVal => ({
-        url: '/Log/AttackDamage',
+        url: '/users/attack/damage',
         method: 'POST',
         body: formVal,
       }),

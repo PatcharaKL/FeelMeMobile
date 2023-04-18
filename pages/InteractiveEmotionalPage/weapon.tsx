@@ -1,6 +1,6 @@
 import React from 'react';
-import {Layout, Text, Avatar, Divider} from '@ui-kitten/components';
-import {StyleSheet, ImageBackground, View} from 'react-native';
+import {Layout, Text, Avatar} from '@ui-kitten/components';
+import {StyleSheet, ImageBackground} from 'react-native';
 import {FlatList, TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {useWeaponListQuery} from './InteractivePageAPI';
 import {setSelectedWeapon} from '../../features/user/weaponSlice';
@@ -38,7 +38,9 @@ const WeaponList = () => {
   return (
     <>
       <Layout style={styles.container}>
-        <Text style={styles.headerText} category="h6">What hits you?</Text>
+        <Text style={styles.headerText} category="h6">
+          What hits you?
+        </Text>
         {isSuccess && (
           <FlatList
             horizontal={true}

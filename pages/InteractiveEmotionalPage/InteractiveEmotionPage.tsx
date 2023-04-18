@@ -6,16 +6,15 @@ import Character from '../InteractiveEmotionalPage/character';
 import {useUserDetailQuery} from '../../features/api/apiSlice';
 import {useAppDispatch, useAppSelector} from '../../app/hook';
 import {setHp} from '../../features/user/userSlice';
-import Weapon from './weapon';
+// import Weapon from './weapon';
 const InteractiveEmotionPage = () => {
   const dispatch = useAppDispatch();
-  const {accessToken} = useAppSelector(state => state.tokens);
-  const {hp} = useAppSelector(state => state.user);
+  const {account_id} = useAppSelector(state => state.tokens);
+  // const {hp} = useAppSelector(state => state.user);
   const {data, isSuccess, isLoading} = useUserDetailQuery({
-    accessToken: accessToken,
+    id: account_id,
   });
   useEffect(() => {
-    console.log('triggered!', isSuccess, isLoading, data.hp, hp);
     if (isSuccess) {
       console.log('Dispatching hp');
       dispatch(setHp(data.hp));
@@ -32,7 +31,7 @@ const InteractiveEmotionPage = () => {
         <>
           <HealthBar />
           <Character />
-          <Weapon />
+          {/* <Weapon /> */}
         </>
       )}
     </Layout>

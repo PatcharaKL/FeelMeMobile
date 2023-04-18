@@ -12,10 +12,10 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const HealthBar = () => {
-  const {accessToken} = useAppSelector(state => state.tokens);
+  const {account_id} = useAppSelector(state => state.tokens);
   const {hp} = useAppSelector(state => state.user);
   const {data, isLoading} = useUserDetailQuery({
-    accessToken: accessToken,
+    id: account_id,
   });
   // Client-Side HP animation
   const hpBar = useSharedValue(hp);
@@ -29,6 +29,7 @@ const HealthBar = () => {
     };
   });
   // Sever-Side HP animation
+  console.log(data, account_id);
   const serverHpBar = useSharedValue(data.hp);
   const serverDeriveHpBar = useDerivedValue(() => {
     serverHpBar.value = data.hp;

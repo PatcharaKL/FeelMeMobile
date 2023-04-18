@@ -38,10 +38,12 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
           // store the new token
           const accessToken = refreshResult.data.accessToken;
           const refreshToken = refreshResult.data.refreshToken;
+          const account_id = refreshResult.data.account_id;
           StoreData({
             api,
             accessToken,
             refreshToken,
+            account_id,
           });
           // retry the original query with new access token
           console.log('successfully retry the original query');
@@ -62,11 +64,12 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
   return result;
 };
 
-const StoreData = async ({api, accessToken, refreshToken}: any) => {
+const StoreData = async ({api, accessToken, refreshToken, account_id}: any) => {
   api.dispatch(
     setToken({
       accessToken: accessToken,
       refreshToken: refreshToken,
+      account_id: account_id,
     }),
   );
   try {
@@ -102,7 +105,7 @@ export const apiSlice = createApi({
     }),
     apiLogout: builder.mutation({
       query: formVal => ({
-        url: '/User/UserLogOut',
+        url: '/logout',
         method: 'POST',
         body: formVal,
       }),
@@ -110,17 +113,16 @@ export const apiSlice = createApi({
     }),
     userDetail: builder.query({
       query: fromVal => ({
-        url: `/users/employees/${fromVal.id}`,
-        method: 'POST',
+        url: `/users/employees/?accountId=${fromVal.id}`,
+        method: 'GET',
         body: fromVal.body,
       }),
       providesTags: ['User'],
     }),
     userListDetail: builder.query({
-      query: formVal => ({
-        url: '/users/employees',
+      query: () => ({
+        url: '/users/employees/',
         method: 'GET',
-        body: formVal,
       }),
       providesTags: ['OtherUserList'],
     }),

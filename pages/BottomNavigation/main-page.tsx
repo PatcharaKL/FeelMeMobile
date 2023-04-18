@@ -15,14 +15,15 @@ import PeoplePage from '../PeoplesPage/PeoplesPage';
 import BoardPage from '../BoardPage/BoardPage';
 import InteractiveEmotionPage from '../InteractiveEmotionalPage/InteractiveEmotionPage';
 import {StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
 const Main = () => {
   return (
-    <React.Fragment>
+    <SafeAreaView style={{flex: 1}}>
       <TabNavigator />
-    </React.Fragment>
+    </SafeAreaView>
   );
 };
 const bellIcon = (props: any) => <Icon {...props} name="bell-outline" />;
@@ -66,8 +67,8 @@ const TabNavigator = () => {
           component={InteractiveEmotionPage}
         />
         <Screen name="People" component={PeoplePage} />
-        <Screen name="Setting" component={BoardPage} />
-        <Screen name="Board" component={Setting} />
+        <Screen name="Setting" component={Setting} />
+        <Screen name="Board" component={BoardPage} />
       </Navigator>
     </>
   );

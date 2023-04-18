@@ -30,11 +30,12 @@ const Form = ({navigation}: any) => {
   };
   useEffect(() => {
     if (isSuccess) {
-      storeData(data?.accessToken, data?.refreshToken);
+      storeData(data?.accessToken, data?.refreshToken, data?.account_id);
       dispatch(
         setToken({
           accessToken: data?.accessToken,
           refreshToken: data?.refreshToken,
+          account_id: data?.account_id,
         }),
       );
       navigation.replace('Main');
@@ -44,11 +45,15 @@ const Form = ({navigation}: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
-  const storeData = async (accToken: string, refreshToken: string) => {
+  const storeData = async (
+    accToken: string,
+    refreshToken: string,
+    account_id: number,
+  ) => {
     try {
       await AsyncStorage.setItem(
         'TOKEN',
-        JSON.stringify({accToken, refreshToken}),
+        JSON.stringify({accToken, refreshToken, account_id}),
       );
     } catch (err) {
       console.log('error saving data!');

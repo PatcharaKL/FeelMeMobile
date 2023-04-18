@@ -80,8 +80,8 @@ const Header = ({item}: any) => {
   return (
     <Layout>
       <Text category="h5">{`${item.name} ${item.surname}`}</Text>
-      <Text category="c2">{`${item.positionName} LVL.${item.level}`}</Text>
-      <Text category="c2">{`${item.departmentName}`}</Text>
+      <Text category="c2">{`${item.position_name} LVL.${item.level}`}</Text>
+      <Text category="c2">{`${item.department_name}`}</Text>
     </Layout>
   );
 };

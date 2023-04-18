@@ -42,7 +42,7 @@ const App = () => {
           <Provider store={store}>
             <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={eva[theme]}>
-              <AppNavigator />
+                <AppNavigator />
             </ApplicationProvider>
           </Provider>
         </ThemeContext.Provider>
